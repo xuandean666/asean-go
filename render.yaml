@@ -1,0 +1,18 @@
+# Render Blueprint —— 东盟智贸 ASEAN-Go
+# 推荐架构：Neon 永久免费 PostgreSQL + Render 免费 Web Service
+# 文档：https://render.com/docs/blueprint-spec
+# 部署后获得正式地址：https://asean-go.onrender.com
+
+services:
+  - type: web
+    name: asean-go
+    runtime: node
+    plan: free
+    buildCommand: bash scripts/build-deploy.sh
+    startCommand: node dist/server/main.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Neon 数据库连接串，在 Render 控制台手动粘贴（sync:false 不写入仓库）
+      - key: SUDA_DATABASE_URL
+        sync: false

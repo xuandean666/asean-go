@@ -1,0 +1,7 @@
+node_modules
+dist
+logs
+*.log
+.git
+.gitignore
+npm-install.log

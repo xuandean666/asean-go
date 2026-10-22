@@ -1,0 +1,15 @@
+# 强制 shell 脚本始终使用 LF（云端 Linux 构建需要）
+*.sh text eol=lf
+
+# 文本文件统一由 git 规范化换行
+* text=auto
+
+# 二进制文件不做转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

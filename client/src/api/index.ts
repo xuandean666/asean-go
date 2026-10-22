@@ -1,0 +1,9 @@
+export * as dashboard from './dashboard';
+export * as customerService from './customer-service';
+export * as localization from './localization';
+export * as documents from './documents';
+export * as market from './market';
+export * as compliance from './compliance';
+export * as agents from './agents';
+export * as knowledge from './knowledge';
+export * as projects from './projects';
