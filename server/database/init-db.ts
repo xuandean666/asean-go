@@ -228,6 +228,42 @@ CREATE TABLE IF NOT EXISTS product_localizations (
     REFERENCES projects(id) ON DELETE CASCADE
 );
 CREATE INDEX IF NOT EXISTS idx_product_localizations_project_id ON product_localizations(project_id);
+
+-- ========== 平台行级安全角色（DataPaas 每请求 SET LOCAL ROLE 依赖） ==========
+-- 匿名用户 -> anon_，登录用户 -> authenticated_，系统账号 -> service_role_
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon_') THEN
+    CREATE ROLE anon_;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated_') THEN
+    CREATE ROLE authenticated_;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'service_role_') THEN
+    CREATE ROLE service_role_;
+  END IF;
+END
+$$;
+
+-- 连接用户必须是这些角色的成员，才能执行 SET ROLE
+GRANT anon_, authenticated_, service_role_ TO CURRENT_USER;
+GRANT USAGE ON SCHEMA public TO anon_, authenticated_, service_role_;
+-- 业务表读写权限（演示场景三类角色均放开）
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public
+  TO anon_, authenticated_, service_role_;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES
+  TO anon_, authenticated_, service_role_;
+
+-- 数据库连接权限（库名动态获取）
+DO $$
+BEGIN
+  EXECUTE format(
+    'GRANT CONNECT ON DATABASE %I TO anon_, authenticated_, service_role_',
+    current_database()
+  );
+END
+$$;
 `;
 
 export async function initDatabase(databaseUrl: string): Promise<void> {

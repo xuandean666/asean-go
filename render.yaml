@@ -21,3 +21,6 @@ services:
         fromDatabase:
           name: asean-go-db
           property: connectionString
+      # 平台 HTTP 客户端构造时需要基础域名；业务代码不调用平台内部 API，用本机占位即可
+      - key: FORCE_AUTHN_INNERAPI_DOMAIN
+        value: http://127.0.0.1:3000

@@ -9,6 +9,8 @@
   <script>
     try {
       window.__platform__ = JSON.parse('{{{__platform__}}}');
+      // 外部独立部署时，需要把 csrfToken 暴露到 window，供 axios 拦截器设置请求头
+      window.csrfToken = window.__platform__.csrfToken;
     } catch (e) {
       console.error('Failed to parse __platform__', e);
     }
