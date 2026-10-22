@@ -31,9 +31,9 @@ CREATE TABLE IF NOT EXISTS projects (
   status       varchar(50) NOT NULL DEFAULT 'active',
   owner        user_profile,
   _created_at  timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at  timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)
+  _updated_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile
 );
 
 -- ========== 2. agent_tasks ==========
@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS agent_tasks (
   summary            text,
   total_duration_ms  integer,
   _created_at        timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by        user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by        user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at        timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by        user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by        user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT agent_tasks_project_id_fkey FOREIGN KEY (project_id)
     REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -69,9 +69,9 @@ CREATE TABLE IF NOT EXISTS agent_steps (
   completed_at  timestamptz(3),
   duration_ms   integer,
   _created_at   timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by   user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by   user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at   timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by   user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by   user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT agent_steps_task_id_fkey FOREIGN KEY (task_id)
     REFERENCES agent_tasks(id) ON DELETE CASCADE
 );
@@ -87,9 +87,9 @@ CREATE TABLE IF NOT EXISTS conversations (
   status       varchar(50) NOT NULL DEFAULT 'active',
   meta         jsonb,
   _created_at  timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at  timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT conversations_project_id_fkey FOREIGN KEY (project_id)
     REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -109,9 +109,9 @@ CREATE TABLE IF NOT EXISTS messages (
   suggestions     jsonb,
   meta            jsonb,
   _created_at     timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at     timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT messages_conversation_id_fkey FOREIGN KEY (conversation_id)
     REFERENCES conversations(id) ON DELETE CASCADE
 );
@@ -133,9 +133,9 @@ CREATE TABLE IF NOT EXISTS market_reports (
   recommendations text,
   status          varchar(50) NOT NULL DEFAULT 'completed',
   _created_at     timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at     timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by     user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT market_reports_project_id_fkey FOREIGN KEY (project_id)
     REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -154,9 +154,9 @@ CREATE TABLE IF NOT EXISTS knowledge_items (
   source_name  varchar(255),
   status       varchar(50) NOT NULL DEFAULT 'published',
   _created_at  timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at  timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)
+  _updated_by  user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile
 );
 CREATE INDEX IF NOT EXISTS idx_knowledge_category ON knowledge_items(category);
 CREATE INDEX IF NOT EXISTS idx_knowledge_country ON knowledge_items(country);
@@ -177,9 +177,9 @@ CREATE TABLE IF NOT EXISTS compliance_reports (
   conclusion        text,
   status            varchar(50) NOT NULL DEFAULT 'pending',
   _created_at       timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at       timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT compliance_reports_project_id_fkey FOREIGN KEY (project_id)
     REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -197,9 +197,9 @@ CREATE TABLE IF NOT EXISTS documents (
   status            varchar(50) NOT NULL DEFAULT 'processing',
   cross_check_result jsonb,
   _created_at       timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at       timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT documents_project_id_fkey FOREIGN KEY (project_id)
     REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -221,9 +221,9 @@ CREATE TABLE IF NOT EXISTS product_localizations (
   cultural_check    jsonb,
   status            varchar(50) NOT NULL DEFAULT 'draft',
   _created_at       timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _created_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _created_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   _updated_at       timestamptz(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  _updated_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END),
+  _updated_by       user_profile DEFAULT (CASE WHEN current_setting('app.user_id', true) = '' THEN NULL END)::user_profile,
   CONSTRAINT product_localizations_project_id_fkey FOREIGN KEY (project_id)
     REFERENCES projects(id) ON DELETE CASCADE
 );
